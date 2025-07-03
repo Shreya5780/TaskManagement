@@ -1,6 +1,6 @@
 # TaskManagement
 # Project Idea: Task Management API
-Project Features:
+## Project Features:
 1. User Authentication with JWT
    User registration
    User login with JWT token generation
