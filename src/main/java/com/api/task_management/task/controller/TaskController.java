@@ -51,4 +51,11 @@ public class TaskController {
     public ResponseEntity<String> deleteTask(@PathVariable String taskid) {
         return taskService.deleteTask(taskid);
     }
+
+    @PatchMapping("/tasks/{taskid}/{status}")
+    public ResponseEntity<String> updateTaskStatus(@PathVariable String taskid, @PathVariable String status) {
+
+        return taskService.updateStatus(taskid, status);
+
+    }
 }
