@@ -13,6 +13,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document("users")
@@ -41,7 +43,7 @@ public class UserModel {
     private String password;
 
     @CreatedDate
-    private Date created_at;
+    private LocalDateTime created_at;
 
 }
 /*

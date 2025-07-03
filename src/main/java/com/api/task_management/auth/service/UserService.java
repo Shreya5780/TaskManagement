@@ -62,7 +62,7 @@ public class UserService {
                 new UsernamePasswordAuthenticationToken(userModel.getUsername(), user.getPassword()));
 
 //        if(authentication.isAuthenticated()) {
-        String token = jWTService.generateToken(userModel.getUsername());
+        String token = jWTService.generateToken(userModel.getUsername(), userModel.getUid());
         return new ResponseEntity<>(token, HttpStatus.OK);
 //        }
 

@@ -20,7 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMongoRepositories(basePackages = "com.api.task_management.auth.repository") //use repository as mongo repo
+@EnableMongoRepositories(basePackages = {
+        "com.api.task_management.auth.repository",
+        "com.api.task_management.task.repository"
+        }) //use repository as mongo repo
 @EnableMongoAuditing //enable auto set the date
 public class SecurityConfig {
 
