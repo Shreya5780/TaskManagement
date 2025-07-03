@@ -39,3 +39,13 @@ Imagine you go to a cinema:
     It’s issued once
 
     You carry it with every request (like an API call)
+
+    ✅ Summary
+
+We use JWT to:
+
+    Avoid logging in again and again
+
+    Prove who the user is
+
+    Keep APIs secure and fast (stateless — no session saved)
