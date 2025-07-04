@@ -1,14 +1,16 @@
 Request Lifecycle (How Everything Works Together)
 
-    ✅ User sends POST /login with credentials → hits AuthController
+    ✅ User sends POST /login with credentials → hits UserController, which calls UserService
 
-    ✅ Credentials checked using AuthenticationManager, which calls MyUserDetailsService
+    ✅ Using UserRepo Check if username and password exist or not, if not UsernameNotFoundException
 
-    ✅ If correct, JwtUtil generates a JWT token → response sent to client
+    ✅ Credentials checked using AuthenticationManager (where it create UsernamePasswordAuthenticationToken) (AuthenticationManager uses AuthenticationProvider(here DaoAuthenticationProvider - which receive the UsernamePasswordAuthenticationToken, load user from UserDeatilService, validate password))  
+    
+    ✅ If correct, jWTService generates a JWT token → response sent to client
 
     ✅ For all other routes, client sends JWT in Authorization: Bearer <token>
 
-    ✅ JwtRequestFilter intercepts request, extracts & validates token
+    ✅ JwtFilter intercepts request, extracts & validates token(custome security filter, runs before every request and extract JWT form header, validate token, sets user as authenticated)
 
     ✅ If token is valid, Spring sets authentication in the context
 
