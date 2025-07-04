@@ -34,14 +34,14 @@ public class ProfileService {
         if(userRepo.existsByEmail(user.getEmail()) && (!userModel.getEmail().equalsIgnoreCase(user.getEmail()))) {
             throw new UserAlreadyExistException(user.getEmail() + " is already exist, so you don't update it");
         }
-        if(userRepo.existsByUsername(user.getUsername()) && (!userModel.getUsername().equalsIgnoreCase(user.getUsername()))) {
-            throw new UserAlreadyExistException(user.getUsername()  + " is already exist, so you don't update it"   );
-        }
+//        if(userRepo.existsByUsername(user.getUsername()) && (!userModel.getUsername().equalsIgnoreCase(user.getUsername()))) {
+//            throw new UserAlreadyExistException(user.getUsername()  + " is already exist, so you don't update it"   );
+//        }
 
         //if field vallue is there then set else as it is
-        if(user.getEmail() != null) userModel.setEmail(user.getEmail());
-        if(user.getUsername() != null) userModel.setUsername(user.getUsername());
-        if(user.getPassword() != null) userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if(!user.getEmail().isBlank()) userModel.setEmail(user.getEmail());
+//        if(user.getUsername() != null) userModel.setUsername(user.getUsername());
+        if(!user.getPassword().isBlank()) userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         userRepo.save(userModel);
 
