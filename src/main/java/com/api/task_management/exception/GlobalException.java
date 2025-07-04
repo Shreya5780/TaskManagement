@@ -1,5 +1,7 @@
 package com.api.task_management.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,17 @@ public class GlobalException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // to handle jwt related exception if expired or bad formate exception then
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException e){
+        return new ResponseEntity<>("Token is expired, please login again", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<String> handleMalformedJwtException(MalformedJwtException e){
+        return new ResponseEntity<>("Invalid token format, please try again", HttpStatus.BAD_REQUEST);
     }
 
 }

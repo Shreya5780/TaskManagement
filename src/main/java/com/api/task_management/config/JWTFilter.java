@@ -1,6 +1,8 @@
 package com.api.task_management.config;
 
 import com.api.task_management.auth.service.JWTService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,15 +25,30 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        if (header != null && header.startsWith("Bearer ")) {
-            token = header.substring(7);
-            username = jwtService.extractUserName(token);
-        }
+        try{
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            jwtService.authenticateToken(token, request, response);
+            if (header != null && header.startsWith("Bearer ")) {
+                token = header.substring(7);
+                username = jwtService.extractUserName(token);
+            }
 
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                jwtService.authenticateToken(token, request, response);
+
+            }
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
+        catch(ExpiredJwtException e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("token expired");
+        }
+        catch (MalformedJwtException e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("token is not in valid format");
+        }
+        catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Authentication failed");
+        }
     }
 }

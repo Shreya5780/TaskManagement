@@ -1,6 +1,7 @@
 package com.api.task_management.task.controller;
 
 import com.api.task_management.auth.dto.UserPrincipal;
+import com.api.task_management.task.model.TaskDto;
 import com.api.task_management.task.model.TaskModel;
 import com.api.task_management.task.service.TaskService;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class TaskController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
         String userID = user.getUserId();
-//        System.out.println("userID: " + userID);
+        System.out.println("userID: " + userID);
 //        return taskService.getAllTask();
         return taskService.getAllTaskByUserId(userID);
     }
@@ -52,10 +53,19 @@ public class TaskController {
         return taskService.deleteTask(taskid);
     }
 
-    @PatchMapping("/tasks/{taskid}/{status}")
-    public ResponseEntity<String> updateTaskStatus(@PathVariable String taskid, @PathVariable String status) {
+//    @PatchMapping("/tasks/{taskid}/{status}")
+//    public ResponseEntity<String> updateTaskStatus(@PathVariable String taskid, @PathVariable String status) {
+//
+//        return taskService.updateStatus(taskid, status);
+//
+//    }
 
-        return taskService.updateStatus(taskid, status);
+    @PatchMapping("/tasks/{taskid}/status")
+    public ResponseEntity<String> updateTaskStatus2(@PathVariable String taskid, @RequestBody TaskDto status) {
+        TaskModel.Status newStatus = status.getStatus();
+//        System.out.println(newStatus);
+        return taskService.updateStatus(taskid, newStatus);
 
     }
+    //need to use TaskDto because if we direct use String it can't work
 }

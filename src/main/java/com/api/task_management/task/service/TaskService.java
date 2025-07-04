@@ -65,14 +65,14 @@ public class TaskService {
         return new ResponseEntity<>("Task deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<String> updateStatus(String taskId, String status){
+    public ResponseEntity<String> updateStatus(String taskId, TaskModel.Status status){
         TaskModel taskInfo = taskRepo.findById(taskId).orElse(null);
         if(taskInfo == null){
             return new ResponseEntity<>("Task not Found", HttpStatus.NOT_FOUND);
         }
-        System.out.println(TaskModel.Status.valueOf(status.toUpperCase()));
-        TaskModel.Status taskStatus = TaskModel.Status.valueOf(status.toUpperCase());
-        taskInfo.setStatus(taskStatus);
+//        System.out.println(TaskModel.Status.valueOf(status.toUpperCase()));
+//        TaskModel.Status taskStatus = TaskModel.Status.valueOf(status.toUpperCase());
+        taskInfo.setStatus(status);
 
         taskRepo.save(taskInfo);
 
