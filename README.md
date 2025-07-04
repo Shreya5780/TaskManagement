@@ -1,4 +1,4 @@
-Request Lifecycle (How Everything Works Together)
+## Request Lifecycle (How Everything Works Together)
 
     ✅ User sends POST /login with credentials → hits UserController, which calls UserService
 
@@ -16,7 +16,8 @@ Request Lifecycle (How Everything Works Together)
 
     ✅ Protected route controller runs successfully
 
-🟡 Why Do We Use JWT?
+
+## 🟡 Why Do We Use JWT?
 
 We use JWT (JSON Web Token) to:
 
@@ -42,7 +43,6 @@ Imagine you go to a cinema:
 
     You carry it with every request (like an API call)
 
-    ✅ Summary
 
 We use JWT to:
 
