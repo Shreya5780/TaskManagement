@@ -52,12 +52,13 @@ public class SecurityConfig {
     }
 
 
-
+//create and provide AuthenticationManager and handles the process of authenticating users (checking their username and password).
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    //custom AuthenticationProvider, tells how to load user details (like username, password, roles) and how to check passwords.
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -66,7 +67,7 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
-
+//to access the api in frontend
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

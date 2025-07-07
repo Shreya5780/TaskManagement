@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProfileService {
 
@@ -46,5 +49,18 @@ public class ProfileService {
         userRepo.save(userModel);
 
         return new ResponseEntity<>(userModel,  HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserProfileDto>> getAllUser() {
+         List<UserModel> users = userRepo.findAll();
+         List<UserProfileDto> userInfo = new ArrayList<>();
+         for(UserModel user : users) {
+             UserProfileDto dto =  new UserProfileDto(user.getUid(), user.getEmail(), user.getUsername(), user.getPassword(), user.getCreated_at());
+             userInfo.add(dto);
+
+         }
+
+         return new ResponseEntity<>(userInfo, HttpStatus.OK);
+
     }
 }

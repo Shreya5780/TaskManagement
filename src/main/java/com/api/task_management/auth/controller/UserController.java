@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
@@ -25,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginModel user) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody @Valid LoginModel user) {
 
         System.out.println(userService.login(user));
         return userService.login(user);

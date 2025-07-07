@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+//call at every http request and check token valid or not, if yes then sets users authentication in spring ecurity context
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     @Autowired

@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class ProfileController {
@@ -34,6 +36,11 @@ public class ProfileController {
         String username = authentication.getName();
 
         return profileService.updateUser(username, user);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserProfileDto>> getAllUsers() {
+        return profileService.getAllUser();
     }
 
 

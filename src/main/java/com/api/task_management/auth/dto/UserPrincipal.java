@@ -8,6 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+
+//to keep usermodel seperate from security we use this
+//also spring security build to work with UserDeatils interface
+//makes your user object compatible with Spring Security.
 public class UserPrincipal implements UserDetails {
     private UserModel user;
 

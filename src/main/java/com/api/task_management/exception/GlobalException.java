@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+//no need to manually throw error, this gloabl exception auto handle the exception
 @ControllerAdvice
 public class GlobalException {
 

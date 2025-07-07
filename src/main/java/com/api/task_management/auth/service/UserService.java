@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -44,7 +47,7 @@ public class UserService {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> login(LoginModel user) {
+    public ResponseEntity<Map<String, String>> login(LoginModel user) {
         String emailOrPassword = user.getEmailOrUsername();
 
         //check if email or username exist or not
@@ -63,7 +66,11 @@ public class UserService {
 
 //        if(authentication.isAuthenticated()) {
         String token = jWTService.generateToken(userModel.getUsername(), userModel.getUid());
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        String userId = userModel.getUid();
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("userId", userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 //        }
 
 //        return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
