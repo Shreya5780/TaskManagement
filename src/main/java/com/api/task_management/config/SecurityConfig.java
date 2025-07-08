@@ -68,6 +68,7 @@ public class SecurityConfig {
     }
 
 //to access the api in frontend
+    //or we can add @CrossOrigin at every controller
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

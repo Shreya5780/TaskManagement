@@ -52,7 +52,8 @@ public class TaskService {
         if(task.getStatus() != null) taskInfo.setStatus(task.getStatus());
         if(task.getDue_date() != null) taskInfo.setDue_date(task.getDue_date());
         if(task.getUserId() != null) taskInfo.setUserId(task.getUserId());
-
+        System.out.println(taskInfo.toString());
+        taskRepo.save(taskInfo);
         return new ResponseEntity<>(taskInfo, HttpStatus.OK);
     }
 
