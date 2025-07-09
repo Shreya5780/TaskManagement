@@ -4,6 +4,7 @@ import com.api.task_management.auth.dto.UserProfileDto;
 import com.api.task_management.auth.model.UserModel;
 import com.api.task_management.auth.service.ProfileService;
 import com.api.task_management.auth.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +23,17 @@ public class ProfileController {
     private ProfileService profileService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserProfileDto> getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+    public ResponseEntity<UserProfileDto> getUser(@RequestParam String userId) {
 
-        return profileService.getUserByUsername(username);
+
+        return profileService.getUserByUserid(userId);
 
     }
 
     @PutMapping("/me")
-    public ResponseEntity<UserModel> updateUser(@RequestBody UserProfileDto user) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+    public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserProfileDto user, @RequestParam String userId) {
 
-        return profileService.updateUser(username, user);
+        return profileService.updateUser(userId, user);
     }
 
     @GetMapping("/all")

@@ -22,16 +22,24 @@ public class ProfileService {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 
-    public ResponseEntity<UserProfileDto> getUserByUsername(String username) {
-        UserModel user = userRepo.findByUsername(username);
+    public ResponseEntity<UserProfileDto> getUserByUserid(String userId) {
+        UserModel user = userRepo.findById(userId).orElse(null);
+
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         UserProfileDto userInfo = new UserProfileDto(user.getUid(), user.getEmail(), user.getUsername(), user.getPassword(), user.getCreated_at());
 
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserModel> updateUser(String username, UserProfileDto user) {
-        UserModel userModel = userRepo.findByUsername(username);
+    public ResponseEntity<UserModel> updateUser(String userId, UserProfileDto user) {
+        UserModel userModel = userRepo.findById(userId).orElse(null);
+
+        if(userModel == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         //to avoid user can't update with exisiting one
         if(userRepo.existsByEmail(user.getEmail()) && (!userModel.getEmail().equalsIgnoreCase(user.getEmail()))) {
@@ -41,10 +49,11 @@ public class ProfileService {
 //            throw new UserAlreadyExistException(user.getUsername()  + " is already exist, so you don't update it"   );
 //        }
 
-        //if field vallue is there then set else as it is
-        if(!user.getEmail().isBlank()) userModel.setEmail(user.getEmail());
+        //if field vallue is there then set, else as it is
+        //to avoid NullPointerException
+        if(user.getEmail() != null && !user.getEmail().isBlank()) userModel.setEmail(user.getEmail());
 //        if(user.getUsername() != null) userModel.setUsername(user.getUsername());
-        if(!user.getPassword().isBlank()) userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null && !user.getPassword().isBlank()) userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         userRepo.save(userModel);
 
