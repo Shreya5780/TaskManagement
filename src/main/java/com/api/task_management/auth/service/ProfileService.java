@@ -7,6 +7,7 @@ import com.api.task_management.exception.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class ProfileService {
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserModel> updateUser(String userId, UserProfileDto user) {
+    public ResponseEntity<UserModel> updateUser(String userId, UserProfileDto user) throws BadCredentialsException {
         UserModel userModel = userRepo.findById(userId).orElse(null);
 
         if(userModel == null){
@@ -53,7 +54,12 @@ public class ProfileService {
         //to avoid NullPointerException
         if(user.getEmail() != null && !user.getEmail().isBlank()) userModel.setEmail(user.getEmail());
 //        if(user.getUsername() != null) userModel.setUsername(user.getUsername());
-        if(user.getPassword() != null && !user.getPassword().isBlank()) userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null && !user.getPassword().isBlank()) {
+            if(!user.getPassword().matches("^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-\\[\\]{};':\"\\\\|,.<>/?]).{8,}$")){
+                throw new BadCredentialsException("Password must be strong");
+            }
+            userModel.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
 
         userRepo.save(userModel);
 

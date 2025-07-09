@@ -24,10 +24,6 @@ public class UserProfileDto {
     @Size(min = 3, message = "Username must be atleast 3 characters ")
     private String username;
 
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-\\[\\]{};':\"\\\\|,.<>/?]).{8,}$",
-            message = "Password must be at least 8 characters, contain one uppercase letter, and one special symbol"
-    )
     private String password;
     private LocalDateTime created_at;
 }

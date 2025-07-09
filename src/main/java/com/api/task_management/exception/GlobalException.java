@@ -35,7 +35,7 @@ public class GlobalException {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e){
-        return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Invalid password: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
