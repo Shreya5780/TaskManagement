@@ -1,5 +1,6 @@
 package com.api.task_management.config;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +49,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Enable CORS at security level
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(r -> r
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -82,5 +88,21 @@ public class SecurityConfig {
                         .allowCredentials(true);
             }
         };
+    }
+
+    private KeyPair keyPair;
+    @PostConstruct //this method runs autometically after bean created
+    public void init() throws Exception{
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(2048);
+        keyPair = keyPairGenerator.generateKeyPair();
+    }
+
+    public PublicKey getPublicKey() throws Exception{
+        return keyPair.getPublic();
+    }
+
+    public PrivateKey getPrivateKey() throws Exception{
+        return keyPair.getPrivate();
     }
 }

@@ -3,15 +3,10 @@ package com.api.task_management.auth.controller;
 import com.api.task_management.auth.dto.UserProfileDto;
 import com.api.task_management.auth.model.UserModel;
 import com.api.task_management.auth.service.ProfileService;
-import com.api.task_management.auth.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +27,7 @@ public class ProfileController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserProfileDto user, @RequestParam String userId) throws BadCredentialsException {
+    public ResponseEntity<UserProfileDto> updateUser(@RequestBody @Valid UserProfileDto user, @RequestParam String userId) throws BadCredentialsException {
 //        System.out.println(user.getUsername() +" "+ user.getEmail()+" "+ user.getPassword());
 
         return profileService.updateUser(userId, user);

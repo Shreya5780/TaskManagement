@@ -1,5 +1,6 @@
 package com.api.task_management.auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -24,6 +25,7 @@ public class UserProfileDto {
     @Size(min = 3, message = "Username must be atleast 3 characters ")
     private String username;
 
+    @JsonIgnore
     private String password;
     private LocalDateTime created_at;
 }

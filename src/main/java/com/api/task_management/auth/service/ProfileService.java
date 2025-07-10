@@ -35,7 +35,7 @@ public class ProfileService {
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserModel> updateUser(String userId, UserProfileDto user) throws BadCredentialsException {
+    public ResponseEntity<UserProfileDto> updateUser(String userId, UserProfileDto user) throws BadCredentialsException {
         UserModel userModel = userRepo.findById(userId).orElse(null);
 
         if(userModel == null){
@@ -63,7 +63,9 @@ public class ProfileService {
 
         userRepo.save(userModel);
 
-        return new ResponseEntity<>(userModel,  HttpStatus.OK);
+        user = new UserProfileDto(userModel.getUid(), userModel.getEmail(), userModel.getUsername(), userModel.getPassword(), userModel.getCreated_at());
+
+        return new ResponseEntity<>(user,  HttpStatus.OK);
     }
 
     public ResponseEntity<List<UserProfileDto>> getAllUser() {

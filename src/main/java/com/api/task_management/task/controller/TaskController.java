@@ -33,7 +33,7 @@ public class TaskController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
         String userID = user.getUserId();
-        System.out.println("userID: " + userID);
+//        System.out.println("userID: " + userID);
 //        return taskService.getAllTask();
         return taskService.getAllTaskByUserId(userID);
     }

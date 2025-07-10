@@ -1,5 +1,6 @@
 package com.api.task_management.task.service;
 
+import com.api.task_management.exception.ResourceNotFoundException;
 import com.api.task_management.task.model.TaskModel;
 import com.api.task_management.task.repository.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class TaskService {
     }
 
     public ResponseEntity<List<TaskModel>> getAllTaskByUserId(String userId){
+
         List<TaskModel> tasks = taskRepo.findAllByUserId(userId);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
@@ -37,7 +39,8 @@ public class TaskService {
     public ResponseEntity<TaskModel> getTaskByTaskId(String taskId){
         TaskModel task = taskRepo.findById(taskId).orElse(null);
         if(task == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Task not found");
+
         }
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
@@ -45,7 +48,8 @@ public class TaskService {
     public ResponseEntity<TaskModel> updateTask(String taskId, TaskModel task){
         TaskModel taskInfo = taskRepo.findById(taskId).orElse(null);
         if(taskInfo == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Task not found");
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if(task.getTitle() != null) taskInfo.setTitle(task.getTitle());
         if(task.getDescription() != null) taskInfo.setDescription(task.getDescription());
@@ -60,7 +64,9 @@ public class TaskService {
     public ResponseEntity<String> deleteTask(String taskId){
         TaskModel taskInfo = taskRepo.findById(taskId).orElse(null);
         if(taskInfo == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Task not found");
+
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         taskRepo.delete(taskInfo);
         return new ResponseEntity<>("Task deleted", HttpStatus.OK);
@@ -69,7 +75,8 @@ public class TaskService {
     public ResponseEntity<String> updateStatus(String taskId, TaskModel.Status status){
         TaskModel taskInfo = taskRepo.findById(taskId).orElse(null);
         if(taskInfo == null){
-            return new ResponseEntity<>("Task not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Task not found");
+//            return new ResponseEntity<>("Task not Found", HttpStatus.NOT_FOUND);
         }
 //        System.out.println(TaskModel.Status.valueOf(status.toUpperCase()));
 //        TaskModel.Status taskStatus = TaskModel.Status.valueOf(status.toUpperCase());

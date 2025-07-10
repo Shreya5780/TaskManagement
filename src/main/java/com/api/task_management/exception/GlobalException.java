@@ -3,6 +3,7 @@ package com.api.task_management.exception;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -62,6 +63,12 @@ public class GlobalException {
     @ExceptionHandler(MalformedJwtException.class)
     public ResponseEntity<String> handleMalformedJwtException(MalformedJwtException e){
         return new ResponseEntity<>("Invalid token format, please try again", HttpStatus.BAD_REQUEST);
+    }
+
+    //task not found
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException e){
+        return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
     }
 
 }
