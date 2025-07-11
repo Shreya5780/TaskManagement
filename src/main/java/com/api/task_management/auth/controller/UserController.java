@@ -29,12 +29,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SecurityConfig securityConfig;
+
 
     @PostMapping("/register")
-    public ResponseEntity<UserModel> register(@RequestBody @Valid UserModel user) {
-//
+    public ResponseEntity<UserModel> register(@RequestBody @Valid UserModel user) throws Exception {
+        String encryptedPassword = user.getPassword();
+
+        user.setPassword(userService.decryptPassword(encryptedPassword));
         return userService.register(user);
 
     }
@@ -43,51 +44,23 @@ public class UserController {
     public ResponseEntity<Map<String, String>> login(@RequestBody @Valid LoginModel user) throws Exception {
 
         String encryptedPassword = user.getPassword();
-//        System.out.println(encryptedPassword);
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
 
-        OAEPParameterSpec oaepParameterSpec = new OAEPParameterSpec(
-
-
-               "SHA-256",
-                 "MGF1",
-                 MGF1ParameterSpec.SHA256,
-                PSource.PSpecified.DEFAULT
-
-        );
-
-        cipher.init(Cipher.DECRYPT_MODE, securityConfig.getPrivateKey(), oaepParameterSpec);
-
-//        cipher.init(Cipher.DECRYPT_MODE, securityConfig.getPrivateKey(), oaepParameterSpec);
-
-        byte[] decryptedPassword = cipher.doFinal(Base64.getDecoder().decode(encryptedPassword));
-        String decryptedPasswordString = new String(decryptedPassword, "UTF-8");
-
-        user.setPassword(decryptedPasswordString);
+        user.setPassword(userService.decryptPassword(encryptedPassword));
         System.out.println(userService.login(user));
         return userService.login(user);
     }
 
     @GetMapping("/public-key")
     public ResponseEntity<String> getPublicKey() throws Exception {
-        PublicKey publicKey = securityConfig.getPublicKey();
 
-        String encodedKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-        System.out.println(encodedKey);
-        return new ResponseEntity<>(encodedKey, HttpStatus.OK);
+        return new ResponseEntity<>(userService.publicKey(), HttpStatus.OK);
 
     }
 
-    @GetMapping("/key")
-    public ResponseEntity<String> privateKey() throws Exception {
-        PrivateKey publicKey = securityConfig.getPrivateKey();
-
-        String encodedKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-
-        return new ResponseEntity<>(encodedKey, HttpStatus.OK);
-
+    @GetMapping("/encrypt")
+    public ResponseEntity<String> getEncryptPassword(@RequestParam String password) throws Exception {
+        return new ResponseEntity<>(userService.encryptPassword(password), HttpStatus.OK);
     }
-
 
 }
 

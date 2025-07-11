@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+/**
+ * REST controller for managing user profiles.
+ * Provides endpoints to retrieve, update, and list user data.
+ */
+
 @RestController
 @RequestMapping("/api/users")
 public class ProfileController {
