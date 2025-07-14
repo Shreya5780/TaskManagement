@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends MongoRepository<TaskModel, String> {
     List<TaskModel> findAllByUserId(String userId);
+
+    void deleteByTitle(String title);
 }
